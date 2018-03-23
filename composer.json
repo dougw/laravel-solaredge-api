@@ -13,8 +13,8 @@
         {
             "name": "Evert Arnould",
             "email": "development@pragma.be",
-            "edits": "Doug Williams"
-            "email": "doug@nextgrid.com",
+            "edits": "Doug Williams",
+            "email": "doug@nextgrid.com"
         }
     ],
     "autoload": {
