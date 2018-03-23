@@ -12,8 +12,9 @@
     "authors": [
         {
             "name": "Evert Arnould",
-            "email": "development@pragma.be"
-            "edige": "Doug Williams"
+            "email": "development@pragma.be",
+            "edits": "Doug Williams"
+            "email": "doug@nextgrid.com",
         }
     ],
     "autoload": {
