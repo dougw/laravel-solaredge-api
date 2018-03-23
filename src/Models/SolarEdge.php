@@ -48,7 +48,7 @@ class SolarEdge
     function energy($subtractDays, $order){
         $start = Carbon::now()->subDays($subtractDays-1)->format('Y-m-d');
         $end = Carbon::now()->format('Y-m-d');
-        $request = $this->connector->getFromSiteWithStartAndEnd('energy','QUARTER_OF_AN_HOUR', $start, $end);
+        $request = $this->connector->getFromSiteWithStartAndEnd('energy','DAY', $start, $end);
 
         $energy = collect();
 
@@ -57,10 +57,10 @@ class SolarEdge
 
         switch ($order) {
             case 'asc':
-                $energy->days = collect($request->values)->sortBy('date')->reverse();
+                $energy->readings = collect($request->values)->sortBy('date')->reverse();
                 break;
             case 'desc':
-                $energy->days = collect($request->values)->sortBy('date');
+                $energy->readings = collect($request->values)->sortBy('date');
                 break;
         }
 
@@ -83,10 +83,10 @@ class SolarEdge
 
         switch ($order) {
             case 'asc':
-                $power->days    = collect($request->values)->sortBy('date')->reverse();
+                $power->readings    = collect($request->values)->sortBy('date')->reverse();
                 break;
             case 'desc':
-                $power->days    = collect($request->values)->sortBy('date');
+                $power->readings    = collect($request->values)->sortBy('date');
                 break;
         }
 
