@@ -74,7 +74,7 @@ class SolarEdge
     function power($subtractDays, $order){
         $start = Carbon::now()->subDays($subtractDays-1)->format('Y-m-d%20H:i:s');
         $end = Carbon::now()->format('Y-m-d%20H:i:s');
-        $request = $this->connector->getFromSiteWithStartAndEnd('power','DAY', $start, $end,true);
+        $request = $this->connector->getFromSiteWithStartAndEnd('power','QUARTER_OF_AN_HOUR', $start, $end,true);
 
         $power = collect();
 
