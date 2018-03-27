@@ -28,7 +28,8 @@ class SolarEdgeClient implements ApiConnectorInterface
      * @param $siteProperty
      * @return mixed
      */
-    function getFromSite($siteProperty){
+    function getFromSite($siteProperty)
+    {
         $request = Curl::to($this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key)->asJson()->get()->{$siteProperty};
         return $request;
     }
@@ -45,18 +46,18 @@ class SolarEdgeClient implements ApiConnectorInterface
      * @param $siteProperty
      * @return mixed
      */
-    function getFromSiteWithStartAndEnd($siteProperty,$timeUnit,$startTime,$endTime,$withTime = false){
+    function getFromSiteWithStartAndEnd($siteProperty, $startDate, $endDate, $timeUnit, $withTime)
+    {
 
-        
+        // Fucking APIs
+        $startVarName = "startDate";
+        $endVarName = "endDate";
         if($withTime) {
-            $request = Curl::to($this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key . '&startTime=' . $startTime . '&endTime=' . $endTime . '&timeUnit=' . $timeUnit)->asJson()->get()->{$siteProperty};
+            $startVarName = "startTime";
+            $endVarName = "endTime";
         }
-        else {
-            $request =
-                Curl::to($this->endpoint . 'site/' . $this->id . '/' . $siteProperty .
-                    $this->key . '&startTime=' . $startTime . '&endTime=' . $endTime)->asJson()->get()->{$siteProperty};
-        }
-
+        //dd($this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key . '&'.$startVarName.'='.$startDate.'&'.$endVarName.'='.$endDate.'&timeUnit=' .$timeUnit);
+        $request = Curl::to($this->endpoint.'site/'.$this->id.'/'.$siteProperty.$this->key.'&'.$startVarName.'='.$startDate.'&'.$endVarName.'='.$endDate.'&timeUnit='.$timeUnit)->asJson()->get()->{$siteProperty};
         return $request;
     }
 }

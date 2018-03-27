@@ -10,7 +10,8 @@ class SolarEdge
 {
     protected $connector;
 
-    const SOLAREDGE_API_POWER_LOOKBACK_MAX = 28.0; 
+    const SOLAREDGE_API_POWER_LOOKBACK_MAX = 28.0;
+    const SOLAREDGE_API_ENERGY_LOOKBACK_MAX = 365.0; 
 
     public function __construct(ApiConnectorInterface $connector) {
         $this->connector = $connector;
@@ -51,9 +52,12 @@ class SolarEdge
     {
         $endDate = Carbon::now()->setTimezone($timezone);
         $end = $endDate->format('Y-m-d');
-        $start = Carbon::now()->subDays($subtractDays)->format('Y-m-d');
+        if($subtractDays > SolarEdge::SOLAREDGE_API_ENERGY_LOOKBACK_MAX) {
+            $subtractDays = SolarEdge::SOLAREDGE_API_ENERGY_LOOKBACK_MAX;
+        } 
+        $start = $endDate->subDays($subtractDays)->format('Y-m-d');
 
-        $request = $this->connector->getFromSiteWithStartAndEnd('energy','DAY', $start, $end);
+        $request = $this->connector->getFromSiteWithStartAndEnd('energy', $start, $end, 'DAY');
 
         $energy = collect();
 
@@ -80,13 +84,12 @@ class SolarEdge
     {
         $endDate = Carbon::now()->setTimezone($timezone);
         $end = $endDate->format('Y-m-d%20H:i:s');
-
         if($subtractDays > SolarEdge::SOLAREDGE_API_POWER_LOOKBACK_MAX) {
             $subtractDays = SolarEdge::SOLAREDGE_API_POWER_LOOKBACK_MAX;
         }   
         $start = $endDate->subDays($subtractDays)->format('Y-m-d%20H:i:s');
 
-        $request = $this->connector->getFromSiteWithStartAndEnd('power','QUARTER_OF_AN_HOUR', $start, $end, true);
+        $request = $this->connector->getFromSiteWithStartAndEnd('power', $start , $end, 'QUARTER_OF_AN_HOUR', true); // true == with Time var names
 
         $power = collect();
 
