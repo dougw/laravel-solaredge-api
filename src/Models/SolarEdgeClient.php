@@ -45,23 +45,16 @@ class SolarEdgeClient implements ApiConnectorInterface
      * @param $siteProperty
      * @return mixed
      */
-    function getFromSiteWithStartAndEnd($siteProperty,$timeUnit,$startDate,$endDate,$withTime = false){
-        if(!$withTime) {
-            $request =
-                Curl::to($this->endpoint . 'site/' . $this->id . '/' . $siteProperty .
-                    $this->key .
-                    '&startDate=' . $startDate .
-                    '&endDate=' . $endDate .
-                    '&timeUnit=' . $timeUnit
-                )->asJson()->get()->{$siteProperty};
+    function getFromSiteWithStartAndEnd($siteProperty,$timeUnit,$startTime,$endTime,$withTime = false){
+
+        
+        if($withTime) {
+            $request = Curl::to($this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key . '&startTime=' . $startTime . '&endTime=' . $endTime . '&timeUnit=' . $timeUnit)->asJson()->get()->{$siteProperty};
         }
         else {
             $request =
                 Curl::to($this->endpoint . 'site/' . $this->id . '/' . $siteProperty .
-                    $this->key .
-                    '&startTime=' . $startDate .
-                    '&endTime=' . $endDate
-                )->asJson()->get()->{$siteProperty};
+                    $this->key . '&startTime=' . $startTime . '&endTime=' . $endTime)->asJson()->get()->{$siteProperty};
         }
 
         return $request;

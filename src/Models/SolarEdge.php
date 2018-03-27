@@ -10,6 +10,8 @@ class SolarEdge
 {
     protected $connector;
 
+    const SOLAREDGE_API_POWER_LOOKBACK_MAX = 28.0; 
+
     public function __construct(ApiConnectorInterface $connector) {
         $this->connector = $connector;
     }
@@ -18,7 +20,7 @@ class SolarEdge
      * Get Site details
      * @return mixed
      */
-    function details(){
+    function details() {
         $request = $this->connector->getFromSite('details');
 
         $details = collect();
@@ -45,9 +47,12 @@ class SolarEdge
      * Get Site energy
      * @return mixed
      */
-    function energy($subtractDays, $order){
-        $start = Carbon::now()->subDays($subtractDays-1)->format('Y-m-d');
-        $end = Carbon::now()->format('Y-m-d');
+    function energy($subtractDays, $order, $timezone)
+    {
+        $endDate = Carbon::now()->setTimezone($timezone);
+        $end = $endDate->format('Y-m-d');
+        $start = Carbon::now()->subDays($subtractDays)->format('Y-m-d');
+
         $request = $this->connector->getFromSiteWithStartAndEnd('energy','DAY', $start, $end);
 
         $energy = collect();
@@ -71,10 +76,17 @@ class SolarEdge
      * Get Site power
      * @return mixed
      */
-    function power($subtractDays, $order){
-        $start = Carbon::now()->subDays($subtractDays-1)->format('Y-m-d%20H:i:s');
-        $end = Carbon::now()->format('Y-m-d%20H:i:s');
-        $request = $this->connector->getFromSiteWithStartAndEnd('power','QUARTER_OF_AN_HOUR', $start, $end,true);
+    function power($subtractDays, $order, $timezone)
+    {
+        $endDate = Carbon::now()->setTimezone($timezone);
+        $end = $endDate->format('Y-m-d%20H:i:s');
+
+        if($subtractDays > SolarEdge::SOLAREDGE_API_POWER_LOOKBACK_MAX) {
+            $subtractDays = SolarEdge::SOLAREDGE_API_POWER_LOOKBACK_MAX;
+        }   
+        $start = $endDate->subDays($subtractDays)->format('Y-m-d%20H:i:s');
+
+        $request = $this->connector->getFromSiteWithStartAndEnd('power','QUARTER_OF_AN_HOUR', $start, $end, true);
 
         $power = collect();
 
@@ -97,7 +109,8 @@ class SolarEdge
      * Get Site overview
      * @return mixed
      */
-    function overview(){
+    function overview()
+    {
         $request = $this->connector->getFromSite('overview');
 
         $overview = collect();
