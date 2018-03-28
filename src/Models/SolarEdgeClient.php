@@ -28,9 +28,9 @@ class SolarEdgeClient implements ApiConnectorInterface
      * @param $siteProperty
      * @return mixed
      */
-    function getFromSite($siteProperty)
-    {
-        $request = Curl::to($this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key)->asJson()->get()->{$siteProperty};
+    function getFromSite($siteProperty){
+        $url = $this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key;
+        $request = Curl::to($url)->asJson()->get()->{$siteProperty};
         return $request;
     }
 
@@ -46,18 +46,26 @@ class SolarEdgeClient implements ApiConnectorInterface
      * @param $siteProperty
      * @return mixed
      */
-    function getFromSiteWithStartAndEnd($siteProperty, $startDate, $endDate, $timeUnit, $withTime)
-    {
-
-        // Fucking APIs
-        $startVarName = "startDate";
-        $endVarName = "endDate";
-        if($withTime) {
-            $startVarName = "startTime";
-            $endVarName = "endTime";
+    function getFromSiteWithStartAndEnd($siteProperty,$timeUnit,$startDate,$endDate,$withTime = false){
+        if(!$withTime) {
+            $url = $this->endpoint . 'site/' . $this->id . '/' . $siteProperty .
+ $this->key .'&startDate=' . $startDate . '&endDate=' . $endDate . '&timeUnit=' . $timeUnit;
+            $request =
+                Curl::to($url)
+                        ->asJson()
+                        ->get()
+                        ->{$siteProperty};
         }
-        //dd($this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key . '&'.$startVarName.'='.$startDate.'&'.$endVarName.'='.$endDate.'&timeUnit=' .$timeUnit);
-        $request = Curl::to($this->endpoint.'site/'.$this->id.'/'.$siteProperty.$this->key.'&'.$startVarName.'='.$startDate.'&'.$endVarName.'='.$endDate.'&timeUnit='.$timeUnit)->asJson()->get()->{$siteProperty};
+        else {
+            $url = $this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key . '&startTime=' . $startDate .'&endTime=' . $endDate;
+
+            $request =
+                Curl::to($url)
+                        ->asJson()
+                        ->get()
+                        ->{$siteProperty};
+        }
+
         return $request;
     }
 }
