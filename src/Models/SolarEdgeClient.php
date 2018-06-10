@@ -28,7 +28,7 @@ class SolarEdgeClient implements ApiConnectorInterface
      * @param $siteProperty
      * @return mixed
      */
-<<<<<<< HEAD
+
     function getFromSite($siteProperty)
     {
         $request = null;
@@ -37,11 +37,6 @@ class SolarEdgeClient implements ApiConnectorInterface
         } catch(Exception $e) {
             // There was an error    
         }
-=======
-    function getFromSite($siteProperty){
-        $url = $this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key;
-        $request = Curl::to($url)->asJson()->get()->{$siteProperty};
->>>>>>> 66e0bb5ac466a82886302c6c01f206fb9609f46b
         return $request;
     }
 
