@@ -68,14 +68,13 @@ class SolarEdgeClient implements ApiConnectorInterface
         }
         else {
             $url = $this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key . '&startTime=' . $startDate .'&endTime=' . $endDate;
-            try {
-                $request =
+            $request =
                     Curl::to($url)
                             ->asJson()
-                            ->get()
-                            ->{$siteProperty};
-            } catch(Exception $e) {
-                // There was an error    
+                            ->get();
+
+            if( null !== $request) {
+                 $request = $request->{$siteProperty};
             }
         }
 
