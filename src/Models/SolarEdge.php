@@ -2,6 +2,7 @@
 
 namespace PragmaBroadvertising\SolarEdge\Models;
 
+use App;
 use Carbon\Carbon;
 use PragmaBroadvertising\SolarEdge\Interfaces\ApiConnectorInterface;
 
@@ -9,9 +10,6 @@ use PragmaBroadvertising\SolarEdge\Interfaces\ApiConnectorInterface;
 class SolarEdge
 {
     protected $connector;
-
-    const SOLAREDGE_API_POWER_LOOKBACK_MAX = 28.0;
-    const SOLAREDGE_API_ENERGY_LOOKBACK_MAX = 365.0; 
 
     public function __construct(ApiConnectorInterface $connector) {
         $this->connector = $connector;
@@ -21,7 +19,7 @@ class SolarEdge
      * Get Site details
      * @return mixed
      */
-    function details() {
+    function details(){
         $request = $this->connector->getFromSite('details');
         if( null == $request ) {
             return array();
@@ -51,14 +49,10 @@ class SolarEdge
      * Get Site energy
      * @return mixed
      */
-    function energy($subtractDays, $order, $timezone)
+    function energy(Carbon $startDate, Carbon $endDate, $order)
     {
-        $endDate = Carbon::now()->setTimezone($timezone);
+        $start = $startDate->format('Y-m-d');
         $end = $endDate->format('Y-m-d');
-        if($subtractDays > SolarEdge::SOLAREDGE_API_ENERGY_LOOKBACK_MAX) {
-            $subtractDays = SolarEdge::SOLAREDGE_API_ENERGY_LOOKBACK_MAX;
-        } 
-        $start = $endDate->subDays($subtractDays)->format('Y-m-d');
 
         $request = $this->connector->getFromSiteWithStartAndEnd('energy', $start, $end, 'DAY');
         if( null == $request ) {
@@ -86,10 +80,11 @@ class SolarEdge
      * Get Site power
      * @return mixed
      */
-    function power($subtractDays, $order, $timezone)
+    function power(Carbon $startDate, Carbon $endDate, $order)
     {
-        $endDate = Carbon::now()->setTimezone($timezone);
+        $start = $startDate->format('Y-m-d%20H:i:s');
         $end = $endDate->format('Y-m-d%20H:i:s');
+
         if($subtractDays > SolarEdge::SOLAREDGE_API_POWER_LOOKBACK_MAX) {
             $subtractDays = SolarEdge::SOLAREDGE_API_POWER_LOOKBACK_MAX;
         }   
@@ -121,8 +116,7 @@ class SolarEdge
      * Get Site overview
      * @return mixed
      */
-    function overview()
-    {
+    function overview(){
         $request = $this->connector->getFromSite('overview');
         if( null == $request ) {
             return array();

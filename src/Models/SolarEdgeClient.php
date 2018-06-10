@@ -28,6 +28,7 @@ class SolarEdgeClient implements ApiConnectorInterface
      * @param $siteProperty
      * @return mixed
      */
+<<<<<<< HEAD
     function getFromSite($siteProperty)
     {
         $request = null;
@@ -36,6 +37,11 @@ class SolarEdgeClient implements ApiConnectorInterface
         } catch(Exception $e) {
             // There was an error    
         }
+=======
+    function getFromSite($siteProperty){
+        $url = $this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key;
+        $request = Curl::to($url)->asJson()->get()->{$siteProperty};
+>>>>>>> 66e0bb5ac466a82886302c6c01f206fb9609f46b
         return $request;
     }
 
@@ -51,16 +57,26 @@ class SolarEdgeClient implements ApiConnectorInterface
      * @param $siteProperty
      * @return mixed
      */
-    function getFromSiteWithStartAndEnd($siteProperty, $startDate, $endDate, $timeUnit, $withTime)
-    {
-
-        // Fucking APIs
-        $startVarName = "startDate";
-        $endVarName = "endDate";
-        if($withTime) {
-            $startVarName = "startTime";
-            $endVarName = "endTime";
+    function getFromSiteWithStartAndEnd($siteProperty,$timeUnit,$startDate,$endDate,$withTime = false){
+        if(!$withTime) {
+            $url = $this->endpoint . 'site/' . $this->id . '/' . $siteProperty .
+ $this->key .'&startDate=' . $startDate . '&endDate=' . $endDate . '&timeUnit=' . $timeUnit;
+            $request =
+                Curl::to($url)
+                        ->asJson()
+                        ->get()
+                        ->{$siteProperty};
         }
+        else {
+            $url = $this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key . '&startTime=' . $startDate .'&endTime=' . $endDate;
+
+            $request =
+                Curl::to($url)
+                        ->asJson()
+                        ->get()
+                        ->{$siteProperty};
+        }
+<<<<<<< HEAD
         //dd($this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key . '&'.$startVarName.'='.$startDate.'&'.$endVarName.'='.$endDate.'&timeUnit=' .$timeUnit);
         $request = null;
         try {
@@ -68,6 +84,9 @@ class SolarEdgeClient implements ApiConnectorInterface
         } catch(Exception $e) {
             // There was an error    
         }
+=======
+
+>>>>>>> 66e0bb5ac466a82886302c6c01f206fb9609f46b
         return $request;
     }
 }

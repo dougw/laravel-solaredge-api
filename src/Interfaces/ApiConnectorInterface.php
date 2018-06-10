@@ -33,5 +33,5 @@ interface ApiConnectorInterface
      * @param $siteProperty
      * @return mixed
      */
-    public function getFromSiteWithStartAndEnd($siteProperty,$startDate,$endDate,$timeUnit,$withTime);
+    public function getFromSiteWithStartAndEnd($siteProperty,$timeUnit,$startDate,$endDate,$withTime = false);
 }
