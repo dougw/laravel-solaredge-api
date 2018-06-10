@@ -58,7 +58,7 @@ class SolarEdge
 
         $energy = collect();
         if( null == $request ) {
-            print_r("SolareEdge energy() -- could not read energy data from generator");
+            print_r("SolarEdge energy() -- could not read energy data from generator");
             return $energy;
         }
 
@@ -89,7 +89,7 @@ class SolarEdge
         
         $power = collect();
         if( null == $request ) {
-            print_r("SolareEdge power() -- could not read power data from generator");
+            print_r("SolarEdge power() -- could not read power data from generator");
             return $power;
         }
 
