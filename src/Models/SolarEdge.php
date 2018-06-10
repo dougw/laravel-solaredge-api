@@ -57,7 +57,10 @@ class SolarEdge
         $request = $this->connector->getFromSiteWithStartAndEnd('energy', $start, $end, 'DAY');
 
         $energy = collect();
-
+        if( null == $request ) {
+            print_r("SolareEdge energy() -- could not read energy data from generator");
+            return $energy;
+        }
 
         $energy->measured_by = $request->measuredBy;
         $energy->unit = $request->unit;
@@ -85,7 +88,7 @@ class SolarEdge
         $request = $this->connector->getFromSiteWithStartAndEnd('power', $start , $end, 'QUARTER_OF_AN_HOUR', true); // true == with Time var names
         
         $power = collect();
-        if( empty($request) ) {
+        if( null == $request ) {
             print_r("SolareEdge power() -- could not read power data from generator");
             return $power;
         }
