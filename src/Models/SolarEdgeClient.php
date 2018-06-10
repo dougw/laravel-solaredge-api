@@ -52,7 +52,7 @@ class SolarEdgeClient implements ApiConnectorInterface
      * @param $siteProperty
      * @return mixed
      */
-    function getFromSiteWithStartAndEnd($siteProperty,$timeUnit,$startDate,$endDate,$withTime = false){
+    function getFromSiteWithStartAndEnd($siteProperty,$startDate,$endDate,$timeUnit,$withTime = false){
 
         $request = null;
         if(!$withTime) {
