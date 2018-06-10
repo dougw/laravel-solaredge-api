@@ -62,7 +62,8 @@ class SolarEdgeClient implements ApiConnectorInterface
                             ->asJson()
                             ->get();
 var_dump($request);
-            if( !empry($request) )  {
+print_r(empty($request));
+            if( !empty($request) )  {
                  $request = $request->{$siteProperty};
             }
         }
