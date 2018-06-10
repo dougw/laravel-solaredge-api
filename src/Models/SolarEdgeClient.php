@@ -71,7 +71,7 @@ class SolarEdgeClient implements ApiConnectorInterface
                         ->get()
                         ->{$siteProperty};
         }
-<<<<<<< HEAD
+
         //dd($this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key . '&'.$startVarName.'='.$startDate.'&'.$endVarName.'='.$endDate.'&timeUnit=' .$timeUnit);
         $request = null;
         try {
@@ -79,9 +79,6 @@ class SolarEdgeClient implements ApiConnectorInterface
         } catch(Exception $e) {
             // There was an error    
         }
-=======
-
->>>>>>> 66e0bb5ac466a82886302c6c01f206fb9609f46b
         return $request;
     }
 }
