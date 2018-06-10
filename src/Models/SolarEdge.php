@@ -55,11 +55,9 @@ class SolarEdge
         $end = $endDate->format('Y-m-d');
 
         $request = $this->connector->getFromSiteWithStartAndEnd('energy', $start, $end, 'DAY');
-        if( null == $request ) {
-            return array();
-        }
 
         $energy = collect();
+        print_r($energy);
 
         $energy->measured_by = $request->measuredBy;
         $energy->unit = $request->unit;
@@ -85,10 +83,7 @@ class SolarEdge
         $start = $startDate->format('Y-m-d%20H:i:s');
         $end = $endDate->format('Y-m-d%20H:i:s');
         $request = $this->connector->getFromSiteWithStartAndEnd('power', $start , $end, 'QUARTER_OF_AN_HOUR', true); // true == with Time var names
-        if( null == $request ) {
-            return array();
-        }
-
+        
         $power = collect();
 
         $power->interval    = $request->timeUnit;
