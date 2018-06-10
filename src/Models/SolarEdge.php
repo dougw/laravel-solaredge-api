@@ -57,11 +57,7 @@ class SolarEdge
         $request = $this->connector->getFromSiteWithStartAndEnd('energy', $start, $end, 'DAY');
 
         $energy = collect();
-        if( !isset($request->measuredBy) || !isset($request->unit) ) {
-            print_r("SolareEdge energy() -- could not read energy data from generator");
-            print_r($request);
-            return $energy;
-        }
+
 
         $energy->measured_by = $request->measuredBy;
         $energy->unit = $request->unit;
