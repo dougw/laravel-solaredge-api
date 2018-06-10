@@ -30,7 +30,12 @@ class SolarEdgeClient implements ApiConnectorInterface
      */
     function getFromSite($siteProperty)
     {
-        $request = Curl::to($this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key)->asJson()->get()->{$siteProperty};
+        $request = null;
+        try {
+            $request = Curl::to($this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key)->asJson()->get()->{$siteProperty};
+        } catch(Exception $e) {
+            // There was an error    
+        }
         return $request;
     }
 
@@ -57,7 +62,12 @@ class SolarEdgeClient implements ApiConnectorInterface
             $endVarName = "endTime";
         }
         //dd($this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key . '&'.$startVarName.'='.$startDate.'&'.$endVarName.'='.$endDate.'&timeUnit=' .$timeUnit);
-        $request = Curl::to($this->endpoint.'site/'.$this->id.'/'.$siteProperty.$this->key.'&'.$startVarName.'='.$startDate.'&'.$endVarName.'='.$endDate.'&timeUnit='.$timeUnit)->asJson()->get()->{$siteProperty};
+        $request = null;
+        try {
+            $request = Curl::to($this->endpoint.'site/'.$this->id.'/'.$siteProperty.$this->key.'&'.$startVarName.'='.$startDate.'&'.$endVarName.'='.$endDate.'&timeUnit='.$timeUnit)->asJson()->get()->{$siteProperty};
+        } catch(Exception $e) {
+            // There was an error    
+        }
         return $request;
     }
 }
