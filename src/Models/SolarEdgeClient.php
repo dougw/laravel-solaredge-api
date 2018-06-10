@@ -53,32 +53,36 @@ class SolarEdgeClient implements ApiConnectorInterface
      * @return mixed
      */
     function getFromSiteWithStartAndEnd($siteProperty,$timeUnit,$startDate,$endDate,$withTime = false){
+
+        $request = null;
         if(!$withTime) {
             $url = $this->endpoint . 'site/' . $this->id . '/' . $siteProperty .
  $this->key .'&startDate=' . $startDate . '&endDate=' . $endDate . '&timeUnit=' . $timeUnit;
-            $request =
-                Curl::to($url)
-                        ->asJson()
-                        ->get()
-                        ->{$siteProperty};
+            try {
+                $request =
+                    Curl::to($url)
+                            ->asJson()
+                            ->get()
+                            ->{$siteProperty};
+            } catch(Exception $e) {
+                // There was an error    
+            }
         }
         else {
             $url = $this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key . '&startTime=' . $startDate .'&endTime=' . $endDate;
-
-            $request =
-                Curl::to($url)
-                        ->asJson()
-                        ->get()
-                        ->{$siteProperty};
+            try {
+                $request =
+                    Curl::to($url)
+                            ->asJson()
+                            ->get()
+                            ->{$siteProperty};
+            } catch(Exception $e) {
+                // There was an error    
+            }
         }
 
         //dd($this->endpoint . 'site/' . $this->id . '/' . $siteProperty . $this->key . '&'.$startVarName.'='.$startDate.'&'.$endVarName.'='.$endDate.'&timeUnit=' .$timeUnit);
-        $request = null;
-        try {
-            $request = Curl::to($this->endpoint.'site/'.$this->id.'/'.$siteProperty.$this->key.'&'.$startVarName.'='.$startDate.'&'.$endVarName.'='.$endDate.'&timeUnit='.$timeUnit)->asJson()->get()->{$siteProperty};
-        } catch(Exception $e) {
-            // There was an error    
-        }
+
         return $request;
     }
 }
