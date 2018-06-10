@@ -84,12 +84,6 @@ class SolarEdge
     {
         $start = $startDate->format('Y-m-d%20H:i:s');
         $end = $endDate->format('Y-m-d%20H:i:s');
-
-        if($subtractDays > SolarEdge::SOLAREDGE_API_POWER_LOOKBACK_MAX) {
-            $subtractDays = SolarEdge::SOLAREDGE_API_POWER_LOOKBACK_MAX;
-        }   
-        $start = $endDate->subDays($subtractDays)->format('Y-m-d%20H:i:s');
-
         $request = $this->connector->getFromSiteWithStartAndEnd('power', $start , $end, 'QUARTER_OF_AN_HOUR', true); // true == with Time var names
         if( null == $request ) {
             return array();
